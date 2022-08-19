@@ -13,6 +13,16 @@ class CargoController extends Controller
     /**
      * Display a welcome page.
      */
+    public function swagger(Request $request) {
+        
+        return response()->json([
+            'name' => $request->input('name'),
+        ]);
+    }
+
+    /**
+     * Display a welcome page.
+     */
     public function welcome() {
         // $cargos = Cargo::all();
         $cargos = DB::select(

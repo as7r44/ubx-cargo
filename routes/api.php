@@ -20,6 +20,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::resource('/cargos' , App\Http\Controllers\CargoController::class);
 
+// Route::post('/swagger' , [App\Http\Controllers\CargoController::class, 'swagger']);
 
 Route::fallback(function () {
     return response()->json([
