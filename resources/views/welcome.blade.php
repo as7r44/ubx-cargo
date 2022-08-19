@@ -46,7 +46,7 @@
                 <button class="btn btn-success" id="viewdata" type="button">VIEW DATA</button>
             </div>
 
-            <div class="mt-2 p-5">
+            <div class="mt-2 p-5" id="table_results">
                 
             <table id="cargos" class="table table-striped" style="width:100%">
                 <thead>
@@ -96,6 +96,8 @@
 
         <script>
             $(document).ready(function () {
+                $("#table_results").hide();
+
                 $("#cargos").DataTable({
                     "scrollX": true,
                     "aaSorting": [],
@@ -109,6 +111,7 @@
                         type:"GET",
                         url:"{{url('/get-cargos')}}",
                         success: function(data) {
+                            $("#table_results").show();
                             $("#table_content").html(data);
                         }
                     });
