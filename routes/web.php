@@ -13,9 +13,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
-Route::get('/' , [App\Http\Controllers\CargoController::class, 'index']);
+Route::get('/' , [App\Http\Controllers\CargoController::class, 'welcome']);
 Route::post('/import' , [App\Http\Controllers\CargoController::class, 'import']);
+Route::get('/get-cargos' , [App\Http\Controllers\CargoController::class, 'get_cargos']);
