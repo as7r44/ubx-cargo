@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Cargo;
 use App\Imports\CargosImport;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\DB;
 
 class CargoController extends Controller
 {
@@ -13,8 +14,11 @@ class CargoController extends Controller
      * Display a welcome page.
      */
     public function welcome() {
-        $cargos = Cargo::all();
-
+        // $cargos = Cargo::all();
+        $cargos = DB::select(
+            'CALL get_cargos()'
+         );
+        // dd($cargos);
         return view('welcome', compact('cargos'));
     }
 
@@ -22,7 +26,10 @@ class CargoController extends Controller
      * Get cardos to a welcome page.
      */
     public function get_cargos() {
-        $cargos = Cargo::all();
+        // $cargos = Cargo::all();
+        $cargos = DB::select(
+            'CALL get_cargos()'
+         );
 
         $output="";
         foreach($cargos as $cargo){
@@ -52,7 +59,13 @@ class CargoController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function import(Request $request) {
-        Excel::import(new CargosImport, $request->file('cargos_file'));
+
+        try {
+            Excel::import(new CargosImport, $request->file('cargos_file'));
+        }
+        catch (\Exception $e) {
+            return back()->with('error', 'Something Wrong'); 
+        }
 
         // session()->flash("success", "This is success message");
 
@@ -138,7 +151,10 @@ class CargoController extends Controller
      */
     public function show($id)
     {
-        $cargo = Cargo::find($id);
+        // $cargo = Cargo::find($id);
+        $cargo = DB::select(
+            'CALL get_cargo('.$id.')'
+        );
 
         if(!is_null($cargo)){
             return response()->json([

@@ -33,8 +33,8 @@
        <div class="content mt-5">
             <form action="/import" method="POST" enctype="multipart/form-data">
             @csrf
-                <div class="d-grid gap-2 d-md-flex justify-content-md-center">
-                    <div class="w-25">
+                <div class="d-grid gap-2 d-md-flex justify-content-center">
+                    <div class="">
                         <input class="form-control" type="file" id="cargos_file" name="cargos_file" accept=".xls,.xlsx,.csv" required>
                     </div>
 
@@ -42,13 +42,13 @@
                 </div>
             </form> 
 
-            <div class="d-grid d-md-flex justify-content-md-center mt-5">
+            <div class="d-grid d-flex justify-content-center mt-5">
                 <button class="btn btn-success" id="viewdata" type="button">VIEW DATA</button>
             </div>
 
-            <div class="d-grid d-md-flex justify-content-md-center mt-2 p-5">
+            <div class="mt-2 p-5">
                 
-            <table id="example" class="table table-striped" style="width:100%">
+            <table id="cargos" class="table table-striped" style="width:100%">
                 <thead>
                     <tr>
                         <th>Cargo No</th>
@@ -96,7 +96,11 @@
 
         <script>
             $(document).ready(function () {
-                $('#example').DataTable();
+                $("#cargos").DataTable({
+                    "scrollX": true,
+                    "aaSorting": [],
+                    "autoWidth": true,
+                });
 
 
                 $("#viewdata").click(function(){
@@ -105,9 +109,7 @@
                         type:"GET",
                         url:"{{url('/get-cargos')}}",
                         success: function(data) {
-                            // $("#success").html('Inserted into database').delay(3000).fadeOut();
                             $("#table_content").html(data);
-                            console.log(data);
                         }
                     });
                 });
@@ -120,6 +122,13 @@
                     title: 'Great!',
                     text: '{{ Session::get("success") }}'
                 })
+                @endif
+                @if(Session::has('error'))
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: '{{ Session::get("error") }}'
+                    })
                 @endif
                 });
             });
